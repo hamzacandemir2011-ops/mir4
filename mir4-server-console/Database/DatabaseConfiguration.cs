@@ -102,7 +102,7 @@ namespace Server_Console.Database
                 MessageBox.Show("Database Configuration Saved", "Database Configuration", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 //output the config settings to debug console
-                Debug.WriteLine($"Database Configuration Saved: Hostname: {Settings.Default.Hostname}, Username: {Settings.Default.Username}, Password: {Settings.Default.Password}");
+                Debug.WriteLine($"Database Configuration Saved: Hostname: {Settings.Default.Hostname}, Username: {Settings.Default.Username}");
 
                 this.Close();
 

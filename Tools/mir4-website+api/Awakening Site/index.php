@@ -23,7 +23,7 @@ if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $translations)) {
     $_SESSION['lang'] = $_GET['lang'];
 }
 
-$lang = $_SESSION['lang'] ?? substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+$lang = $_SESSION['lang'] ?? substr($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'en', 0, 2);
 $lang = array_key_exists($lang, $translations) ? $lang : 'uk';
 $current_translations = $translations[$lang];
 ?>

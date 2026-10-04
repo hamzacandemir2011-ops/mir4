@@ -32,7 +32,7 @@ require_once 'config/base.php';
                     <?php
                     // Exibe a mensagem de erro do captcha, se houver
                     if (isset($_SESSION['captchaError'])) {
-                        echo $_SESSION['captchaError'];
+                        echo htmlspecialchars($_SESSION['captchaError'], ENT_QUOTES, 'UTF-8');
                         unset($_SESSION['captchaError']);
                     }
                     ?>
@@ -41,7 +41,7 @@ require_once 'config/base.php';
                     <?php
                     // Exibe a mensagem de erro, se houver
                     if (isset($_SESSION['error'])) {
-                        echo $_SESSION['error'];
+                        echo htmlspecialchars($_SESSION['error'], ENT_QUOTES, 'UTF-8');
                         unset($_SESSION['error']);
                     }
                     ?>

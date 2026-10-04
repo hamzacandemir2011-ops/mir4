@@ -16,6 +16,8 @@ if ($_SERVER['REQUEST_URI'] === '/login') {
             $user = $stmt->fetch();
     
             if ($user) {
+                // New session ID after login to prevent session fixation
+                session_regenerate_id(true);
                 $_SESSION['loggedin'] = true;
                 $_SESSION['user'] = $user;
     
@@ -40,19 +42,7 @@ if ($_SERVER['REQUEST_URI'] === '/login') {
 
 // Register...
 } elseif ($_SERVER['REQUEST_URI'] === '/register') {
-
-    if (isset($_POST['h-captcha-response']) && !empty($_POST['h-captcha-response'])) {
-        $secret = 'ES_896af29a65274b64a6ba1227289b6cf7';
-        $verifyResponse = file_get_contents('https://hcaptcha.com/siteverify?secret=' . $secret . '&response=' . $_POST['h-captcha-response'] . '&remoteip=' . $_SERVER['REMOTE_ADDR']);
-        $responseData = json_decode($verifyResponse);
-        if ($responseData->success) {
-            header("Location: ucp");
-            exit();
-        } else {
-            $_SESSION['captchaError'] = 'Captcha check failed, please try again.'; //Needs translation adding
-        }
-    }
-
+    // Page doesn't require login. The form posts to formsend.php, which verifies the captcha server-side.
 
 } elseif (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     $user = $_SESSION['user'];
@@ -91,7 +81,7 @@ if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $translations)) {
 }
 
 // Determine the Language based on Session or Browser Language
-$lang = $_SESSION['lang'] ?? substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+$lang = $_SESSION['lang'] ?? substr($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'en', 0, 2);
 $lang = array_key_exists($lang, $translations) ? $lang : 'en';
 $current_translations = $translations[$lang];
 

@@ -110,8 +110,9 @@ require_once 'config/base.php';
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $base_url = 'https://forum.mir4global.com/rank?';
         $query = '';
-        $page = $_GET['page'] ?? 1;
-        $num_pages = $_GET['pages'] ?? 1;
+        $page = max(1, (int)($_GET['page'] ?? 1));
+        // Each page is a separate request to the official site, so cap it
+        $num_pages = min(10, max(1, (int)($_GET['pages'] ?? 1)));
 
 
         // Collect query parameters
