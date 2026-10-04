@@ -1,6 +1,5 @@
 import discord
-
-ROLES_MESSAGE = 1140727328322879608
+from config import ROLES_MESSAGE, ROLE_EN, ROLE_PT, ROLE_ANNOUNCEMENTS
 
 async def handleRoleAdd(event: discord.RawReactionActionEvent, user: discord.Member):
     if event.message_id != ROLES_MESSAGE:
@@ -8,11 +7,11 @@ async def handleRoleAdd(event: discord.RawReactionActionEvent, user: discord.Mem
 
     emoji = str(event.emoji)
     if emoji == "🇺🇸":
-        await toggleRole(1129148272309702756, user, True)
+        await toggleRole(ROLE_EN, user, True)
     if emoji == "🇧🇷":
-        await toggleRole(1129148360591425596, user, True)
+        await toggleRole(ROLE_PT, user, True)
     if emoji == "📢":
-        await toggleRole(1129148508721647657, user, True)
+        await toggleRole(ROLE_ANNOUNCEMENTS, user, True)
 
 async def handleRoleRemove(event: discord.RawReactionActionEvent, user: discord.Member):
     if event.message_id != ROLES_MESSAGE:
@@ -20,11 +19,11 @@ async def handleRoleRemove(event: discord.RawReactionActionEvent, user: discord.
     
     emoji = str(event.emoji)
     if emoji == "🇺🇸":
-        await toggleRole(1129148272309702756, user, False)
+        await toggleRole(ROLE_EN, user, False)
     if emoji == "🇧🇷":
-        await toggleRole(1129148360591425596, user, False)
+        await toggleRole(ROLE_PT, user, False)
     if emoji == "📢":
-        await toggleRole(1129148508721647657, user, False)
+        await toggleRole(ROLE_ANNOUNCEMENTS, user, False)
 
 async def toggleRole(roleId: int, user: discord.Member, add: bool):
     role = discord.Object(roleId)

@@ -10,11 +10,11 @@ from embeds import prepareReportEmbed, suggestionEmbed, bugReportEmbed
 load_dotenv()
 intents = discord.Intents.all()
 
-guild_id = 1127618095687671909
+from config import GUILD_ID, ADMIN_CHANNEL, ROLES_CHANNEL, ROLES_MESSAGE
+
+guild_id = GUILD_ID
 my_guild = discord.Object(id=guild_id)
-admin_channel = 1141774925552689153
-ROLES_CHANNEL = 1129159066086801578
-ROLES_MESSAGE = 1140727328322879608
+admin_channel = ADMIN_CHANNEL
 
 class MyClient(discord.Client):
     def __init__(self, *, intents: Intents):

@@ -3,9 +3,10 @@ require_once 'config/base.php';
 
 // Load character data
 function loadCharacterData() {
+    // Player data export (git-ignored, not shipped with the repo)
     $filePath = 'Database/character_tb.json';
     if (!file_exists($filePath)) return [];
-    return json_decode(file_get_contents($filePath), true);
+    return json_decode(file_get_contents($filePath), true) ?? [];
 }
 
 // Load stage names
@@ -72,7 +73,8 @@ function sortData(&$data, $sortOption) {
 $data = loadCharacterData();
 $stageNames = loadStageNames();
 $classPercentages = calculateClassPercentages($data);
-$sortOption = $_GET['sort'] ?? 'Lev';
+$allowedSorts = ['Lev', 'Wonbo', 'Gold', 'PlaytimeSec', 'CombatPoint', 'EnergyPoint', 'BlackIron', 'ActionPoint', 'PKPoint', 'AncientCoin'];
+$sortOption = in_array($_GET['sort'] ?? '', $allowedSorts, true) ? $_GET['sort'] : 'Lev';
 $selectedMap = $_GET['map'] ?? null;
 
 // Handle filters
@@ -155,8 +157,9 @@ if (isset($_GET['profile'])) {
 
         <?php
         // Load JSON files
-        $equipItems = json_decode(file_get_contents('Database/Characters/equip_item_tb.json'), true);
-        $itemData = json_decode(file_get_contents('Database/Characters/item_tb.json'), true);
+        // Player item exports are git-ignored; show empty slots when they are missing
+        $equipItems = file_exists('Database/Characters/equip_item_tb.json') ? (json_decode(file_get_contents('Database/Characters/equip_item_tb.json'), true) ?? []) : [];
+        $itemData = file_exists('Database/Characters/item_tb.json') ? (json_decode(file_get_contents('Database/Characters/item_tb.json'), true) ?? []) : [];
         $allItems = json_decode(file_get_contents('Database/ITEM.json'), true);
         $stringTemplate = json_decode(file_get_contents('Database/string_template.json'), true);
 
