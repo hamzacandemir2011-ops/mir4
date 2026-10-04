@@ -17,7 +17,7 @@
        <div class="container halfsection">
             <!-- <div id="logomir4"></div> -->
             <h2 class="center">
-                Welcome, <?= $user['Username']; ?>!
+                Welcome, <?= htmlspecialchars($user['Username'], ENT_QUOTES, 'UTF-8'); ?>!
             </h2>
         </div>
 
@@ -32,8 +32,10 @@
                     <?php
 
                     foreach ($characters as $character) {
+                        // Escape all values: character names are player-controlled
+                        $character = array_map(fn($v) => htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'), $character);
                         echo '<div class="card">';
-                            echo '<img src="static/characters/' . $character["Class"] . '.webp" alt="' . $character["name"] . '">';
+                            echo '<img src="static/characters/' . $character["Class"] . '.webp" alt="' . $character["CharacterName"] . '">';
                             echo '<div class="card-content">';
                                 echo '<h3 class="chName">' . $character["CharacterName"] . '</h3>';
                                 echo '<p>CharacterUID: ' . $character["CharacterUID"] . '</p>';
@@ -75,12 +77,12 @@
                 <form action="update_personal_data.php" method="post">
                     <div class="boxInput">
                         <label for="username">Username:</label><br>
-                        <input type="text" id="username" name="username" value="<?= $user['Username']; ?>"><br>
+                        <input type="text" id="username" name="username" value="<?= htmlspecialchars($user['Username'], ENT_QUOTES, 'UTF-8'); ?>"><br>
                     </div>
 
                     <div class="boxInput">
                         <label for="email">Email:</label><br>
-                        <input type="email" id="email" name="email" value="<?= $user['Email']; ?>"><br>
+                        <input type="email" id="email" name="email" value="<?= htmlspecialchars($user['Email'], ENT_QUOTES, 'UTF-8'); ?>"><br>
                     </div>
 
                     <div class="boxInput">

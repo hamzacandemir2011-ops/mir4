@@ -21,7 +21,7 @@ require_once 'config/base.php';
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="new-password" required>
                 <?php if(isset($error)): ?>
-                    <p style="color:rgb(245, 108, 108); font-size:12px;"><?php echo $error; ?></p>
+                    <p style="color:rgb(245, 108, 108); font-size:12px;"><?php echo htmlspecialchars($error, ENT_QUOTES, 'UTF-8'); ?></p>
                     <?php endif; ?>
 
                 <br><br><br>

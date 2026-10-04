@@ -1,13 +1,16 @@
 <?php
 session_start();
 
+// Path without the query string, so e.g. /rankings?sort=Gold still counts as /rankings
+$requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
 $allowedPages = ['/', '/install', '/tools', '/rankings', '/m4', '/community', '/faq'];
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     $user = $_SESSION['user'];
     $characters = $_SESSION['characters'];
 
-} elseif (in_array($_SERVER['REQUEST_URI'], $allowedPages)) {
+} elseif (in_array($requestPath, $allowedPages)) {
     // Page doesn't require login; allow access
 } else {
     //Re-direct to login if accessing restricted page and not logged in
@@ -23,7 +26,7 @@ if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $translations)) {
     $_SESSION['lang'] = $_GET['lang'];
 }
 
-$lang = $_SESSION['lang'] ?? substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+$lang = $_SESSION['lang'] ?? substr($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'en', 0, 2);
 $lang = array_key_exists($lang, $translations) ? $lang : 'uk';
 $current_translations = $translations[$lang];
 ?>

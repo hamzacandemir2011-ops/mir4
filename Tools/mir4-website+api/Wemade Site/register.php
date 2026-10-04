@@ -1,17 +1,7 @@
 <?php
 session_start(); // Deve ser a primeira linha
 
-if (isset($_POST['h-captcha-response']) && !empty($_POST['h-captcha-response'])) {
-    $secret = 'ES_896af29a65274b64a6ba1227289b6cf7';
-    $verifyResponse = file_get_contents('https://hcaptcha.com/siteverify?secret=' . $secret . '&response=' . $_POST['h-captcha-response'] . '&remoteip=' . $_SERVER['REMOTE_ADDR']);
-    $responseData = json_decode($verifyResponse);
-    if ($responseData->success) {
-        // Seu código de sucesso vai aqui
-        // Por exemplo, você pode redirecionar o usuário para uma página de sucesso
-    } else {
-        $_SESSION['captchaError'] = 'A verificação do robô falhou, por favor tente novamente.';
-    }
-}
+// The form posts to formsend.php, which verifies the captcha server-side.
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -362,7 +352,7 @@ if (isset($_POST['h-captcha-response']) && !empty($_POST['h-captcha-response']))
                     <?php
                     // Exibe a mensagem de erro do captcha, se houver
                     if (isset($_SESSION['captchaError'])) {
-                        echo $_SESSION['captchaError'];
+                        echo htmlspecialchars($_SESSION['captchaError'], ENT_QUOTES, 'UTF-8');
                         unset($_SESSION['captchaError']);
                     }
                     ?>
@@ -371,7 +361,7 @@ if (isset($_POST['h-captcha-response']) && !empty($_POST['h-captcha-response']))
                     <?php
                     // Exibe a mensagem de erro, se houver
                     if (isset($_SESSION['error'])) {
-                        echo $_SESSION['error'];
+                        echo htmlspecialchars($_SESSION['error'], ENT_QUOTES, 'UTF-8');
                         unset($_SESSION['error']);
                     }
                     ?>

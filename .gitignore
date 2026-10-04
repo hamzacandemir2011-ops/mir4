@@ -7,3 +7,13 @@
 /mir4-server-console/bin
 /Tools/mir4-client-editor/.vs
 /Tools/mir4-client-editor/Mir4ClientEditor/obj
+
+# Local website secrets (see config.local.example.php)
+/Tools/mir4-website+api/*/config/config.local.php
+
+# Player data exports for the website rankings (personal data, keep out of git)
+/Tools/mir4-website+api/Awakening Site/Database/character_tb.json
+/Tools/mir4-website+api/Awakening Site/Database/equip_item_tb.json
+/Tools/mir4-website+api/Awakening Site/Database/item_tb.json
+/Tools/mir4-website+api/Awakening Site/Database/Characters/equip_item_tb.json
+/Tools/mir4-website+api/Awakening Site/Database/Characters/item_tb.json

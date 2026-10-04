@@ -1,9 +1,12 @@
 <?php
 session_start();
 
+// Path without the query string, so e.g. /rankings?sort=Gold still counts as /rankings
+$requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
 $allowedPages = ['/', '/install', '/tools', '/rankings', '/m4', '/community', '/faq', '/index2'];
 
-if ($_SERVER['REQUEST_URI'] === '/login') {
+if ($requestPath === '/login') {
 
     if (isset($_POST['submit'])) {
         $username = $_POST['username'];
@@ -16,6 +19,8 @@ if ($_SERVER['REQUEST_URI'] === '/login') {
             $user = $stmt->fetch();
     
             if ($user) {
+                // New session ID after login to prevent session fixation
+                session_regenerate_id(true);
                 $_SESSION['loggedin'] = true;
                 $_SESSION['user'] = $user;
     
@@ -39,26 +44,14 @@ if ($_SERVER['REQUEST_URI'] === '/login') {
 
 
 // Register...
-} elseif ($_SERVER['REQUEST_URI'] === '/register') {
-
-    if (isset($_POST['h-captcha-response']) && !empty($_POST['h-captcha-response'])) {
-        $secret = 'ES_896af29a65274b64a6ba1227289b6cf7';
-        $verifyResponse = file_get_contents('https://hcaptcha.com/siteverify?secret=' . $secret . '&response=' . $_POST['h-captcha-response'] . '&remoteip=' . $_SERVER['REMOTE_ADDR']);
-        $responseData = json_decode($verifyResponse);
-        if ($responseData->success) {
-            header("Location: ucp");
-            exit();
-        } else {
-            $_SESSION['captchaError'] = 'Captcha check failed, please try again.'; //Needs translation adding
-        }
-    }
-
+} elseif ($requestPath === '/register') {
+    // Page doesn't require login. The form posts to formsend.php, which verifies the captcha server-side.
 
 } elseif (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
     $user = $_SESSION['user'];
     $characters = $_SESSION['characters'];
 
-} elseif (in_array($_SERVER['REQUEST_URI'], $allowedPages)) {
+} elseif (in_array($requestPath, $allowedPages)) {
     // Page doesn't require login; allow access
 } else {
     //Re-direct to login if accessing restricted page and not logged in
@@ -91,7 +84,7 @@ if (isset($_GET['lang']) && array_key_exists($_GET['lang'], $translations)) {
 }
 
 // Determine the Language based on Session or Browser Language
-$lang = $_SESSION['lang'] ?? substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+$lang = $_SESSION['lang'] ?? substr($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'en', 0, 2);
 $lang = array_key_exists($lang, $translations) ? $lang : 'en';
 $current_translations = $translations[$lang];
 

@@ -7,8 +7,9 @@ from translation import en, pt
 import os
 import discord
 import json
+from config import INVENTORY_CHANNEL_EN, INVENTORY_CHANNEL_PT
 
-allowedChannels = [1128338314877997177, 1129154483268632636]
+allowedChannels = [INVENTORY_CHANNEL_EN, INVENTORY_CHANNEL_PT]
 
 GLOBAL_SCALE = 1.42
 leftTopPadding = 30
@@ -26,7 +27,7 @@ async def handleImageDetection(message: str, clientId: int, avatar: discord.Asse
     language = None
     translation = {}
 
-    if message.channel.id == 1129154483268632636:
+    if message.channel.id == INVENTORY_CHANNEL_PT:
         language = "pt"
         translation = pt
     else:

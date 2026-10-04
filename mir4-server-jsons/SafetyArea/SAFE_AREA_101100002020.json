@@ -1,6 +1,6 @@
 [
-  {
-       {
+      {
+        "UniqueID": 1030101,
         "ActiveRadius": 500,
         "DefaultState": true,
         "WaypointWarpNeedCostId": "ECostType::TYPE_NONE",
@@ -18,5 +18,5 @@
           "Y": 1889.9996,
           "Z": 850.0
         }
-      }    
-  ]
+      }
+]
